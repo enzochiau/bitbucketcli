@@ -49,8 +49,8 @@ class User(ShowOne):
         userdata = jsondata['user']
         userdata.pop('resource_uri')
         userdata.pop('avatar')
-        columns = userdata.viewkeys()
-        data = userdata.viewvalues()
+        columns = userdata.keys()
+        data = userdata.values()
         return (columns, data)
 
 
@@ -71,6 +71,6 @@ class Userprivileges(ShowOne):
         r = requests.get(url, auth=(user, passwd))
         jsondata = json.loads(r.text)
         userdata = jsondata['teams']
-        columns = userdata.viewkeys()
-        data = userdata.viewvalues()
+        columns = userdata.keys()
+        data = userdata.values()
         return (columns, data)

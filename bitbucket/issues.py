@@ -17,7 +17,7 @@ import os
 import sys
 import json
 import imp
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import tablib
 import logging
 import requests
@@ -200,7 +200,7 @@ class Getissue(ShowOne):
             primaryurl = ("https://bitbucket.org/api/1.0/"
                           "repositories/{a.account}/{a.reponame}/"
                           "issues/?").format(a=parsed_args)
-            params = urllib.urlencode(args)
+            params = urllib.parse.urlencode(args)
             url = primaryurl + params
             issuefilter_url['url'] = url
         elif args == {} and args_id != {} and args_followers != {}:
@@ -218,9 +218,9 @@ class Getissue(ShowOne):
         try:
             data = json.loads(r.text)
         except:
-            print """
+            print("""
  Error: '404' No Issues Found ' or ' Invalid argument supplied.
-"""
+""")
             sys.exit(1)
 
         if all([issuelist_url,
@@ -321,10 +321,10 @@ class Getissue(ShowOne):
                         csvdata.append(row)
                     f.write(csvdata.csv)
                     f.close()
-                    print "\n CSV File created.\n"
+                    print("\n CSV File created.\n")
                     sys.exit(0)
             else:
-                print "\nTotal Issues: {d[count]}\n".format(d=data)
+                print("\nTotal Issues: {d[count]}\n".format(d=data))
 
                 loopmsg = """Issue_ID: {i[local_id]}
 Issue_Status: {i[status]}
@@ -332,7 +332,7 @@ Issue_Title: {i[title]}
 ======================================================================="""
 
                 for i in data['issues']:
-                    print loopmsg.format(i=i)
+                    print(loopmsg.format(i=i))
                 sys.exit(0)
         elif all([issuedetail_url,
                   not(issuelist_url),
@@ -354,10 +354,10 @@ Issue_Title: {i[title]}
             newdata['comment_count'] = data['comment_count']
             newdata['is_spam'] = data['is_spam']
             newdata['follower_count'] = data['follower_count']
-            columns = newdata.viewkeys()
-            columndata = newdata.viewvalues()
-            print "\nTitle: %s\n" % (data['title'])
-            print "Content: %s\n" % (data['content'])
+            columns = newdata.keys()
+            columndata = newdata.values()
+            print("\nTitle: %s\n" % (data['title']))
+            print("Content: %s\n" % (data['content']))
             return (columns, columndata)
         elif all([issuefilter_url,
                   not(issuelist_url),
@@ -469,29 +469,29 @@ Issue_Title: {i[title]}
                         csvdata.append(row)
                     f.write(csvdata.csv)
                     f.close()
-                    print "\n CSV File created.\n"
+                    print("\n CSV File created.\n")
                 sys.exit(0)
             else:
-                print "\nTotal Issues: {d[count]}\n".format(d=data)
+                print("\nTotal Issues: {d[count]}\n".format(d=data))
 
                 loopmsg = """Issue_ID: {i[local_id]}
 Issue_Status: {i[status]}
 Issue_Title: {i[title]}
 ======================================================================="""
                 for i in data['issues']:
-                    print loopmsg.format(i=i)
+                    print(loopmsg.format(i=i))
                 sys.exit(0)
         elif all([issuefollowers_url,
                   not(issuelist_url),
                   not(issuedetail_url),
                   not(issuefilter_url)]):
-            print "\nFollowers Count: %s\n" % (data['count'])
+            print("\nFollowers Count: %s\n" % (data['count']))
             for i in data['followers']:
-                print "Followers Name: %s" % (i['username'])
-            print "\n"
+                print("Followers Name: %s" % (i['username']))
+            print("\n")
             sys.exit(0)
         else:
-            print "Invalid Request no data received."
+            print("Invalid Request no data received.")
             sys.exit(1)
 
 
@@ -644,11 +644,11 @@ class Createissue(ShowOne):
             newdata['comment_count'] = data['comment_count']
             newdata['is_spam'] = data['is_spam']
             newdata['follower_count'] = data['follower_count']
-            columns = newdata.viewkeys()
-            columndata = newdata.viewvalues()
-            print "\nNew Issue Created.\n"
-            print "\nTitle: %s\n" % (data['title'])
-            print "Content: %s\n" % (data['content'])
+            columns = newdata.keys()
+            columndata = newdata.values()
+            print("\nNew Issue Created.\n")
+            print("\nTitle: %s\n" % (data['title']))
+            print("Content: %s\n" % (data['content']))
             return (columns, columndata)
         else:
             self.app.stdout.write(
@@ -816,11 +816,11 @@ class Editissue(ShowOne):
             newdata['comment_count'] = data['comment_count']
             newdata['is_spam'] = data['is_spam']
             newdata['follower_count'] = data['follower_count']
-            columns = newdata.viewkeys()
-            columndata = newdata.viewvalues()
-            print "\nIssue Edited.\n"
-            print "\nTitle: %s\n" % (data['title'])
-            print "Content: %s\n" % (data['content'])
+            columns = newdata.keys()
+            columndata = newdata.values()
+            print("\nIssue Edited.\n")
+            print("\nTitle: %s\n" % (data['title']))
+            print("Content: %s\n" % (data['content']))
             return (columns, columndata)
         else:
             self.app.stdout.write(
@@ -874,7 +874,7 @@ class Deleteissue(Command):
             self.app.stdout.write("\nIssue Deleted Successfully.\n\n")
             sys.exit(0)
         else:
-            print "\n" + r.text + "\n"
+            print("\n" + r.text + "\n")
             self.app.stdout.write("Invalid Issue ID Supplied.\n\n")
             sys.exit(1)
 
@@ -935,7 +935,7 @@ Comment: {c[content]}
                 newdata.add_row(["Comment ID", comment['comment_id']])
                 newdata.add_row(["UTC Updated on", comment['utc_updated_on']])
                 newdata.add_row(["UTC Created on", comment['utc_created_on']])
-                print loopmsg.format(c=comment, newdata=newdata)
+                print(loopmsg.format(c=comment, newdata=newdata))
             sys.exit(0)
         else:
             self.app.stdout.write(
@@ -1001,7 +1001,7 @@ class Postcomment(Command):
 Comment: d[content]s" % (data['content'])
 {newdata}
 ---------------------------------------------------------------"""
-            print msg.format(d=data, newdata=newdata)
+            print(msg.format(d=data, newdata=newdata))
             sys.exit(0)
         else:
             self.app.stdout.write(

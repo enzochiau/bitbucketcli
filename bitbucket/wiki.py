@@ -81,7 +81,7 @@ Revision: {d[rev]}
 Page Content: {d[data]}
 
 """
-            print msg.format(d=data)
+            print(msg.format(d=data))
         else:
             print ("\n Error: '404' No Wiki Pages Found"
                    " 'or' Invalid argument supplied.\n")
@@ -136,9 +136,9 @@ class Wikipost(Command):
                "wiki/{a.page}/").format(a=parsed_args)
         r = requests.post(url, data=args, auth=(user, passwd))
         if r.status_code == 200:
-            print "\n Wiki Page Created Successfully.\n"
+            print("\n Wiki Page Created Successfully.\n")
         else:
             msg = ("\n Error: '{r.status_code}' "
                    "Something Went Wrong -- Bitbucket.\n")
-            print msg.format(r=r)
+            print(msg.format(r=r))
             sys.exit(1)

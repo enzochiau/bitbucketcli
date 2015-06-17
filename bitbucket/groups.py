@@ -73,10 +73,10 @@ class Groups(Command):
                     newdata.add_row([group['name'], ""])
                     for member in group['members']:
                         newdata.add_row(["", member['username']])
-                    print newdata
+                    print(newdata)
                 sys.exit(0)
             else:
-                print "\n No groups found.\n"
+                print("\n No groups found.\n")
         else:
             self.app.stdout.write(
                 '\n Error: ' + '"' + str(r.status_code) + '"' +
@@ -152,7 +152,7 @@ Group Name: {d[name]}
 Group Owner: {d[owner][username]}
 Group Permission: {d[permission]}
 """
-            print msg.format(d=data)
+            print(msg.format(d=data))
             sys.exit(0)
         elif r.status_code == 400:
 
@@ -161,7 +161,7 @@ Group Permission: {d[permission]}
 
  A group with name '{a.name}' already exists.
 """
-            print msg.format(r=r, a=parsed_args)
+            print(msg.format(r=r, a=parsed_args))
             sys.exit(1)
         else:
 
@@ -206,7 +206,7 @@ class Deletegroup(Command):
 
         r = requests.delete(url, auth=(user, passwd))
         if r.status_code == 204:
-            print "\n Group '{a.name}' deleted.\n".format(a=parsed_args)
+            print("\n Group '{a.name}' deleted.\n".format(a=parsed_args))
             sys.exit(0)
         else:
 
@@ -252,11 +252,11 @@ class Groupmembers(Command):
         r = requests.get(url, auth=(user, passwd))
         if r.status_code == 200:
             data = json.loads(r.text)
-            print "\n Group Name: {a.name}".format(a=parsed_args)
+            print("\n Group Name: {a.name}".format(a=parsed_args))
             newdata = prettytable.PrettyTable()
             newdata.padding_width = 1
             newdata.add_column("Members", [i['username'] for i in data])
-            print newdata
+            print(newdata)
         else:
             self.app.stdout.write(
                 '\n Error: ' + '"' + str(r.status_code) + '"' +
@@ -307,13 +307,13 @@ class Addgroupmember(Command):
             msg = """
  User '{a.member}' added to group '{a.name}'
  """
-            print msg.format(a=parsed_args)
+            print(msg.format(a=parsed_args))
             sys.exit(0)
         elif r.status_code == 409:
             msg = """
  'Conflict/Duplicate' User '{a.member}' present in group
  """
-            print msg.format(a=parsed_args)
+            print(msg.format(a=parsed_args))
             sys.exit(1)
         else:
 
@@ -368,7 +368,7 @@ class Deletegroupmember(Command):
             msg = """
  User '{a.member}' removed from group '{a.name}'
 """
-            print msg.format(a=parsed_args)
+            print(msg.format(a=parsed_args))
             sys.exit(0)
         else:
 

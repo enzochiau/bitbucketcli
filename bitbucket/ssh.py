@@ -67,9 +67,9 @@ class Sshkeyget(Command):
             r = requests.get(url, auth=(user, passwd))
             if r.status_code == 200:
                 data = json.loads(r.text)
-                print "\nKey ID: %s" % (parsed_args.key_id)
-                print "Key: %s" % (data['key'])
-                print "Key Label: %s" % (data['label'])
+                print("\nKey ID: %s" % (parsed_args.key_id))
+                print("Key: %s" % (data['key']))
+                print("Key Label: %s" % (data['label']))
                 sys.exit(0)
             else:
                 self.app.stdout.write(
@@ -90,7 +90,7 @@ Key Label: {k[label]}
 =======================================================
 """
                 for key in data:
-                    print loopmsg.format(k=key)
+                    print(loopmsg.format(k=key))
                 sys.exit(0)
             else:
                 msg = '\n Error: "{r.status_code}" Invalid request\n\n'
@@ -148,7 +148,7 @@ Key ID: {d[pk]}
 Key: {d[key]}
 Key Label: {d[label]}
 """
-            print msg.format(d=data)
+            print(msg.format(d=data))
             sys.exit(0)
         elif r.status_code == 400:
             msg = ('\n Error: "{r.status_code}"'
@@ -194,7 +194,7 @@ class Sshkeydelete(Command):
                "ssh-keys/{a.key_id}").forma(a=parsed_args)
         r = requests.delete(url, auth=(user, passwd))
         if r.status_code == 204:
-            print "\n Key ID '{a.key_id}' deleted.\n".format(a=parsed_args)
+            print("\n Key ID '{a.key_id}' deleted.\n".format(a=parsed_args))
             sys.exit(0)
         else:
             msg = '\n Error: "{r.status_code}" Invalid request\n\n'
